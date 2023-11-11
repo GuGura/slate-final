@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { Editable, Slate, withReact } from "slate-react";
 import { createEditor, Descendant } from "slate";
 import {
@@ -8,14 +8,24 @@ import {
   Leaf,
 } from "@/components/slate/RenderElement";
 import { KeySet } from "@/lib/slate-key";
-import {initialValue} from "@/lib/utils";
+import { withHistory } from "slate-history";
+
+const initialValue: Descendant[] = [
+  {
+    type: "paragraph",
+    children: [
+      {
+        text: "This example shows what happens when the Editor is set to readOnly, it is not editablefsdfmdslmklfdmskdfsm",
+      },
+    ],
+  },
+];
 
 export default function Editor() {
-  const [editor] = useState(() => withReact(createEditor()));
+  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
 
-  const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
-
-  const renderElement = useCallback((props) => {
+  const renderElement = useCallback((props: any) => {
     switch (props.element.type) {
       case "code":
         return <CodeElement {...props} />;
@@ -25,11 +35,12 @@ export default function Editor() {
   }, []);
 
   return (
-    <div className={"w-full max-w-[1000px] bg-red-300"}>
+    <div className={"w-full max-w-[1000px]"}>
       <Slate editor={editor} initialValue={initialValue}>
         <Editable
           className={"h-full"}
           renderLeaf={renderLeaf}
+          placeholder={"Start typing..."}
           renderElement={renderElement}
           onKeyDown={(event) => KeySet(editor, event)}
         />
