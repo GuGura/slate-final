@@ -30,7 +30,7 @@ export const Button = React.forwardRef(
       <span
         {...props}
         ref={ref as Ref<HTMLDivElement>}
-        className={twMerge(`cursor-pointer ${color} ${activeColor}`, className)}
+        className={twMerge(`${color} ${activeColor}`, className)}
       />
     );
   },

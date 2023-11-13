@@ -1,6 +1,37 @@
 import React, { Ref, PropsWithChildren } from "react";
-import { BaseProps, OrNull } from "@/components/slate/Toolbar";
 import { twMerge } from "tailwind-merge";
+import {
+  BLOCK_HEADING_ONE,
+  BLOCK_HEADING_THREE,
+  BLOCK_HEADING_TWO,
+  BLOCK_PARAGRAPH,
+  BLOCK_QUOTE,
+  CHEVRON_DOWN,
+  EMOJI_ALL,
+  EMOJI_APPLE,
+  EMOJI_CAR,
+  EMOJI_MEDAL,
+  EMOJI_SMAIL,
+  EMOJI_SQUIRREL,
+  LINE_HEIGHT,
+  LIST_BULLETED,
+  LIST_NUMBERED,
+  MARK_BOLD,
+  MARK_CODE,
+  MARK_ITALIC,
+  MARK_UNDERLINE,
+  TEXT_ALIGN_CENTER,
+  TEXT_ALIGN_LEFT,
+  TEXT_ALIGN_RIGHT,
+  VIEW_TYPE_PENCIL,
+  VIEW_TYPE_READONLY,
+} from "@/components/slate/custom-slate-plugins";
+
+export interface BaseProps {
+  className?: string;
+  [key: string]: unknown;
+}
+export type OrNull<T> = T | null;
 
 export const Icon = React.forwardRef(
   (
@@ -9,76 +40,76 @@ export const Icon = React.forwardRef(
   ) => {
     let icon;
     switch (props.children) {
-      case "bold":
+      case MARK_BOLD:
         icon = <Bold />;
         break;
-      case "italic":
+      case MARK_ITALIC:
         icon = <Italic />;
         break;
-      case "underlined":
+      case MARK_UNDERLINE:
         icon = <UnderLine />;
         break;
-      case "code":
+      case MARK_CODE:
         icon = <Code />;
         break;
-      case "quote":
+      case BLOCK_QUOTE:
         icon = <Quote />;
         break;
-      case "list_bulleted":
+      case LIST_BULLETED:
         icon = <ListBullet />;
         break;
-      case "list_numbered":
+      case LIST_NUMBERED:
         icon = <ListNumber />;
         break;
-      case "line-height":
+      case LINE_HEIGHT:
         icon = <LineHeight />;
         break;
-      case "align_left":
+      case TEXT_ALIGN_LEFT:
         icon = <TextAlignLeft />;
         break;
-      case "align_center":
+      case TEXT_ALIGN_CENTER:
         icon = <TextAlignCenter />;
         break;
-      case "align_right":
+      case TEXT_ALIGN_RIGHT:
         icon = <TextAlignRight />;
         break;
-      case "paragraph":
+      case BLOCK_PARAGRAPH:
         icon = <Paragraph />;
         break;
-      case "heading1":
+      case BLOCK_HEADING_ONE:
         icon = <Heading1 />;
         break;
-      case "heading2":
+      case BLOCK_HEADING_TWO:
         icon = <Heading2 />;
         break;
-      case "heading3":
+      case BLOCK_HEADING_THREE:
         icon = <Heading3 />;
         break;
-      case "chevron-down":
+      case CHEVRON_DOWN:
         icon = <ChevronDown />;
         break;
-      case "all":
+      case EMOJI_ALL:
         icon = <All />;
         break;
-      case "smail":
+      case EMOJI_SMAIL:
         icon = <Smail />;
         break;
-      case "squirrel":
+      case EMOJI_SQUIRREL:
         icon = <Squirrel />;
         break;
-      case "apple":
+      case EMOJI_APPLE:
         icon = <Apple />;
         break;
-      case "medal":
+      case EMOJI_MEDAL:
         icon = <Medal />;
         break;
-      case "car":
+      case EMOJI_CAR:
         icon = <Car />;
         break;
-      case "pencil":
+      case VIEW_TYPE_PENCIL:
         icon = <Pencil />;
         break;
-      case "view":
+      case VIEW_TYPE_READONLY:
         icon = <View />;
         break;
       default:

@@ -10,62 +10,42 @@ import {
   Element as SlateElement,
 } from "slate";
 import { withHistory } from "slate-history";
-
 import { Button } from "@/components/slate/Button";
 import { Toolbar } from "@/components/slate/Toolbar";
 import { Icon } from "@/components/slate/Icon";
 import { CustomText, EmptyText } from "@/components/custom-types";
+import {
+  RenderElementProps,
+  RenderLeafProps,
+} from "slate-react/dist/components/editable";
 
-const HOTKEYS: {
-  [key: string]: string;
-  "mod+b": string;
-  "mod+i": string;
-  "mod+u": string;
-  "mod+j": string;
-} = {
-  "mod+b": "bold",
-  "mod+i": "italic",
-  "mod+u": "underline",
-  "mod+j": "code",
-};
+import {
+  LIST_TYPES,
+  TEXT_ALIGN_TYPES,
+} from "@/components/slate/custom-slate-plugins";
 
-const LIST_TYPES = ["list_numbered", "list_bulleted"];
-const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
+import { HOTKEYS } from "@/components/slate/hotkeys";
+import { ToolbarHeaderButtons } from "@/components/slate/ToolbarHeaderButtons";
 
 const RichTextExample = () => {
-  const renderElement = useCallback((props: any) => <Element {...props} />, []);
-  const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
+  const renderElement = useCallback(
+    (props: RenderElementProps) => <Element {...props} />,
+    [],
+  );
+  const renderLeaf = useCallback(
+    (props: RenderLeafProps) => <Leaf {...props} />,
+    [],
+  );
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   return (
     <div className={"w-full max-w-[1000px] rounded-2xl border-2"}>
       <Slate editor={editor} initialValue={initialValue}>
         <Toolbar className={"justify-between"}>
-          <div className={"flex"}>
-            <MarkButton format="bold" icon="bold" />
-            <MarkButton format="paragraph" icon="paragraph" />
-            <MarkButton format="italic" icon="italic" />
-            <MarkButton format="underline" icon="underlined" />
-            <MarkButton format="code" icon="code" />
-            <BlockButton format="heading1" icon="heading1" />
-            <BlockButton format="heading2" icon="heading2" />
-            <BlockButton format="heading3" icon="heading3" />
-            <BlockButton format="block-quote" icon="quote" />
-            <BlockButton format="list_numbered" icon="list_numbered" />
-            <BlockButton format="list_bulleted" icon="list_bulleted" />
-            <BlockButton format="line-height" icon="line-height" />
-            <BlockButton format="left" icon="align_left" />
-            <BlockButton format="center" icon="align_center" />
-            <BlockButton format="right" icon="align_right" />
-            <BlockButton format="emoji" icon="smail" />
-          </div>
-          <div className={"flex"}>
-            <BlockButton format="emoji" icon="pencil" />
-            <BlockButton format="emoji" icon="view" />
-          </div>
+          <ToolbarHeaderButtons mode={"modify"} readOnly={false} />
         </Toolbar>
         <Editable
-          className={"p-2"}
+          className={"p-5"}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           placeholder="Enter some rich text…"
@@ -120,9 +100,8 @@ const toggleBlock = (editor: any, format: any) => {
   }
 };
 
-const toggleMark = (editor: any, format: any) => {
+const toggleMark = (editor: any, format: string) => {
   const isActive = isMarkActive(editor, format);
-
   if (isActive) {
     Editor.removeMark(editor, format);
   } else {
@@ -133,7 +112,6 @@ const toggleMark = (editor: any, format: any) => {
 const isBlockActive = (editor: any, format: string, blockType = "type") => {
   const { selection } = editor;
   if (!selection) return false;
-
   const [match] = Array.from(
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
@@ -176,17 +154,23 @@ const Element = ({
           {children}
         </ul>
       );
-    case "heading-one":
+    case "heading1":
       return (
         <h1 style={style} {...attributes}>
           {children}
         </h1>
       );
-    case "heading-two":
+    case "heading2":
       return (
         <h2 style={style} {...attributes}>
           {children}
         </h2>
+      );
+    case "heading3":
+      return (
+        <h3 style={style} {...attributes}>
+          {children}
+        </h3>
       );
     case "list-item":
       return (
@@ -237,11 +221,23 @@ const Leaf = ({
   return <span {...attributes}>{children}</span>;
 };
 
-const BlockButton = ({ format, icon }: { format: string; icon: string }) => {
+export const BlockButton = ({
+  format,
+  icon,
+  dropdown,
+}: {
+  format: string;
+  icon: string;
+  dropdown?: boolean;
+}) => {
   const editor = useSlate();
-  console.log("icon", icon);
+
   return (
-    <div className={"flex h-[36px] w-[36px] items-center justify-center"}>
+    <div
+      className={
+        "hover:bg-grey-custom flex h-[36px] w-[36px] cursor-pointer items-center justify-center rounded hover:text-gray-500"
+      }
+    >
       <Button
         className={"flex"}
         active={isBlockActive(
@@ -256,17 +252,28 @@ const BlockButton = ({ format, icon }: { format: string; icon: string }) => {
       >
         <Icon>{icon}</Icon>
       </Button>
+      {dropdown && <Icon>chevron-down</Icon>}
     </div>
   );
 };
 
-const MarkButton = ({ format, icon }: { format: string; icon: string }) => {
+export const MarkButton = ({
+  format,
+  icon,
+}: {
+  format: string;
+  icon: string;
+}) => {
   const editor = useSlate();
+  const isActive = isMarkActive(editor, format);
+  const color = isActive ? "bg-grey-custom" : "";
   return (
-    <div className={"flex h-[36px] w-[36px] items-center justify-center"}>
+    <div
+      className={`hover:bg-grey-custom flex h-[36px] w-[36px] cursor-pointer items-center justify-center rounded hover:text-gray-500 ${color}`}
+    >
       <Button
         className={"flex"}
-        active={isMarkActive(editor, format)}
+        active={isActive}
         onMouseDown={(event: any) => {
           event.preventDefault();
           toggleMark(editor, format);
@@ -313,5 +320,9 @@ const initialValue: Descendant[] = [
     children: [{ text: "Try it out for yourself!" }],
   },
 ];
+
+function DropDownButton({ children }: { children: any }) {
+  return <div>{children}</div>;
+}
 
 export default RichTextExample;
