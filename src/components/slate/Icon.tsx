@@ -7,7 +7,6 @@ export const Icon = React.forwardRef(
     { className, ...props }: PropsWithChildren<BaseProps>,
     ref: Ref<OrNull<HTMLSpanElement>>,
   ) => {
-    console.log(props);
     let icon;
     switch (props.children) {
       case "bold":
@@ -75,6 +74,12 @@ export const Icon = React.forwardRef(
         break;
       case "car":
         icon = <Car />;
+        break;
+      case "pencil":
+        icon = <Pencil />;
+        break;
+      case "view":
+        icon = <View />;
         break;
       default:
         icon = null;
@@ -624,6 +629,46 @@ export function Symbols() {
       <path d="m12 2 3.5 3.5L12 9 8.5 5.5 12 2Z" />
       <path d="M18.5 8.5 22 12l-3.5 3.5L15 12l3.5-3.5Z" />
       <path d="m12 15 3.5 3.5L12 22l-3.5-3.5L12 15Z" />
+    </svg>
+  );
+}
+
+export function Pencil() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-pencil"
+    >
+      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+      <path d="m15 5 4 4" />
+    </svg>
+  );
+}
+
+export function View() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-eye"
+    >
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
     </svg>
   );
 }

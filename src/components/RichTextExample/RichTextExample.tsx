@@ -13,7 +13,7 @@ import { withHistory } from "slate-history";
 
 import { Button } from "@/components/slate/Button";
 import { Toolbar } from "@/components/slate/Toolbar";
-import { Icon, Paragraph } from "@/components/slate/Icon";
+import { Icon } from "@/components/slate/Icon";
 import { CustomText, EmptyText } from "@/components/custom-types";
 
 const HOTKEYS: {
@@ -21,15 +21,15 @@ const HOTKEYS: {
   "mod+b": string;
   "mod+i": string;
   "mod+u": string;
-  "mod+`": string;
+  "mod+j": string;
 } = {
   "mod+b": "bold",
   "mod+i": "italic",
   "mod+u": "underline",
-  "mod+`": "code",
+  "mod+j": "code",
 };
 
-const LIST_TYPES = ["numbered-list", "bulleted-list"];
+const LIST_TYPES = ["list_numbered", "list_bulleted"];
 const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
 const RichTextExample = () => {
@@ -40,23 +40,29 @@ const RichTextExample = () => {
   return (
     <div className={"w-full max-w-[1000px] rounded-2xl border-2"}>
       <Slate editor={editor} initialValue={initialValue}>
-        <Toolbar>
-          <MarkButton format="bold" icon="bold" />
-          <MarkButton format="paragraph" icon="paragraph" />
-          <MarkButton format="italic" icon="italic" />
-          <MarkButton format="underline" icon="underlined" />
-          <MarkButton format="code" icon="code" />
-          <BlockButton format="heading1" icon="heading1" />
-          <BlockButton format="heading2" icon="heading2" />
-          <BlockButton format="heading3" icon="heading3" />
-          <BlockButton format="block-quote" icon="quote" />
-          <BlockButton format="list_numbered" icon="list_numbered" />
-          <BlockButton format="list_bulleted" icon="list_bulleted" />
-          <BlockButton format="line-height" icon="line-height" />
-          <BlockButton format="left" icon="align_left" />
-          <BlockButton format="center" icon="align_center" />
-          <BlockButton format="right" icon="align_right" />
-          <BlockButton format="emoji" icon="smail" />
+        <Toolbar className={"justify-between"}>
+          <div className={"flex"}>
+            <MarkButton format="bold" icon="bold" />
+            <MarkButton format="paragraph" icon="paragraph" />
+            <MarkButton format="italic" icon="italic" />
+            <MarkButton format="underline" icon="underlined" />
+            <MarkButton format="code" icon="code" />
+            <BlockButton format="heading1" icon="heading1" />
+            <BlockButton format="heading2" icon="heading2" />
+            <BlockButton format="heading3" icon="heading3" />
+            <BlockButton format="block-quote" icon="quote" />
+            <BlockButton format="list_numbered" icon="list_numbered" />
+            <BlockButton format="list_bulleted" icon="list_bulleted" />
+            <BlockButton format="line-height" icon="line-height" />
+            <BlockButton format="left" icon="align_left" />
+            <BlockButton format="center" icon="align_center" />
+            <BlockButton format="right" icon="align_right" />
+            <BlockButton format="emoji" icon="smail" />
+          </div>
+          <div className={"flex"}>
+            <BlockButton format="emoji" icon="pencil" />
+            <BlockButton format="emoji" icon="view" />
+          </div>
         </Toolbar>
         <Editable
           className={"p-2"}
