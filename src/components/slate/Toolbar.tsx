@@ -3,7 +3,7 @@ import React, { PropsWithChildren, Ref } from "react";
 
 import { twMerge } from "tailwind-merge";
 export interface BaseProps {
-  className: string;
+  className?: string;
   [key: string]: unknown;
 }
 export type OrNull<T> = T | null;
@@ -17,7 +17,7 @@ export const Toolbar = React.forwardRef(
       {...props}
       ref={ref as Ref<HTMLDivElement>}
       className={twMerge(
-        "relative mx-0 my-[-20px] mb-20 border-b-2 border-gray-200 pb-[17px] pl-[18px] pt-[1px]",
+        "relative mx-0 mb-5 flex border-b-2 border-gray-200 p-2",
         className,
       )}
     />
