@@ -24,13 +24,12 @@ export const EMOJI_APPLE = "apple";
 export const EMOJI_MEDAL = "medal";
 export const EMOJI_CAR = "car";
 export const EMOJI_ALL = "all";
-export const VIEW_TYPE_PENCIL = "modify";
+export const VIEW_TYPE_MODIFY = "modify";
 export const VIEW_TYPE_READONLY = "readOnly";
-
+export const LIST_ITEM = "list-item";
 export const LIST_TYPES = [LIST_NUMBERED, LIST_BULLETED];
 export const TEXT_ALIGN_TYPES = [ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT];
 export const MARK_BUTTONS = [MARK_BOLD, MARK_ITALIC, MARK_UNDERLINE, MARK_CODE];
-
 export const BLOCK_FONT_BUTTON = [
   BLOCK_PARAGRAPH,
   BLOCK_HEADING_ONE,
@@ -45,4 +44,4 @@ export const TEXT_ALIGN_BUTTON = [
   TEXT_ALIGN_RIGHT,
 ];
 
-export const VIEW_TYPE_BUTTON = [VIEW_TYPE_PENCIL, VIEW_TYPE_READONLY];
+export const VIEW_TYPE_BUTTON = [VIEW_TYPE_MODIFY, VIEW_TYPE_READONLY];

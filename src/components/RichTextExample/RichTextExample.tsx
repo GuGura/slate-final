@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import isHotkey from "is-hotkey";
 import { Editable, withReact, useSlate, Slate } from "slate-react";
 import {
@@ -20,12 +20,15 @@ import {
 } from "slate-react/dist/components/editable";
 
 import {
+  BLOCK_PARAGRAPH,
+  LIST_ITEM,
   LIST_TYPES,
   TEXT_ALIGN_TYPES,
 } from "@/components/slate/custom-slate-plugins";
 
 import { HOTKEYS } from "@/components/slate/hotkeys";
 import { ToolbarHeaderButtons } from "@/components/slate/ToolbarHeaderButtons";
+import { Element, Leaf } from "@/components/slate/ChangeType";
 
 const RichTextExample = () => {
   const renderElement = useCallback(
@@ -37,20 +40,24 @@ const RichTextExample = () => {
     [],
   );
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const readOnly = useState<boolean>(false);
+  const mode: "modify" | "readOnly" = "modify";
 
   return (
     <div className={"w-full max-w-[1000px] rounded-2xl border-2"}>
       <Slate editor={editor} initialValue={initialValue}>
-        <Toolbar className={"justify-between"}>
-          <ToolbarHeaderButtons mode={"modify"} readOnly={false} />
-        </Toolbar>
+        {readOnly && (mode as string) === "readOnly" ? null : (
+          <Toolbar className={"justify-between"}>
+            <ToolbarHeaderButtons mode={"modify"} readOnly={!readOnly} />
+          </Toolbar>
+        )}
+
         <Editable
           className={"p-5"}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           placeholder="Enter some rich text…"
-          // spellCheck
-          // autoFocus
+          readOnly={!readOnly}
           onKeyDown={(event) => {
             for (const hotkey in HOTKEYS) {
               if (isHotkey(hotkey, event as any)) {
@@ -89,7 +96,7 @@ const toggleBlock = (editor: any, format: any) => {
     };
   } else {
     newProperties = {
-      type: isActive ? "paragraph" : isList ? "list-item" : format,
+      type: isActive ? BLOCK_PARAGRAPH : isList ? LIST_ITEM : format,
     };
   }
   Transforms.setNodes<SlateElement>(editor, newProperties);
@@ -129,96 +136,6 @@ const isMarkActive = (editor: any, format: string) => {
   const marks: Omit<CustomText | EmptyText, "text"> | null =
     Editor.marks(editor);
   return marks ? (marks as any)[format] === true : false;
-};
-
-const Element = ({
-  attributes,
-  children,
-  element,
-}: {
-  attributes: any;
-  children?: any;
-  element: any;
-}) => {
-  const style = { textAlign: element.align };
-  switch (element.type) {
-    case "block-quote":
-      return (
-        <blockquote style={style} {...attributes}>
-          {children}
-        </blockquote>
-      );
-    case "bulleted-list":
-      return (
-        <ul style={style} {...attributes}>
-          {children}
-        </ul>
-      );
-    case "heading1":
-      return (
-        <h1 style={style} {...attributes}>
-          {children}
-        </h1>
-      );
-    case "heading2":
-      return (
-        <h2 style={style} {...attributes}>
-          {children}
-        </h2>
-      );
-    case "heading3":
-      return (
-        <h3 style={style} {...attributes}>
-          {children}
-        </h3>
-      );
-    case "list-item":
-      return (
-        <li style={style} {...attributes}>
-          {children}
-        </li>
-      );
-    case "numbered-list":
-      return (
-        <ol style={style} {...attributes}>
-          {children}
-        </ol>
-      );
-    default:
-      return (
-        <p style={style} {...attributes}>
-          {children}
-        </p>
-      );
-  }
-};
-
-const Leaf = ({
-  attributes,
-  children,
-  leaf,
-}: {
-  attributes: any;
-  children?: any;
-  leaf: any;
-}) => {
-  if (leaf.bold) {
-    children = <strong>{children}</strong>;
-  }
-
-  if (leaf.code) {
-    children = <code>{children}</code>;
-  }
-
-  if (leaf.italic) {
-    children = <em>{children}</em>;
-  }
-
-  if (leaf.underline) {
-    children = <u>{children}</u>;
-  }
-
-  return <span {...attributes}>{children}</span>;
 };
 
 export const BlockButton = ({

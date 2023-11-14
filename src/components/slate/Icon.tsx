@@ -23,14 +23,16 @@ import {
   TEXT_ALIGN_CENTER,
   TEXT_ALIGN_LEFT,
   TEXT_ALIGN_RIGHT,
-  VIEW_TYPE_PENCIL,
+  VIEW_TYPE_MODIFY,
   VIEW_TYPE_READONLY,
 } from "@/components/slate/custom-slate-plugins";
 
 export interface BaseProps {
   className?: string;
+
   [key: string]: unknown;
 }
+
 export type OrNull<T> = T | null;
 
 export const Icon = React.forwardRef(
@@ -106,7 +108,7 @@ export const Icon = React.forwardRef(
       case EMOJI_CAR:
         icon = <Car />;
         break;
-      case VIEW_TYPE_PENCIL:
+      case VIEW_TYPE_MODIFY:
         icon = <Pencil />;
         break;
       case VIEW_TYPE_READONLY:
